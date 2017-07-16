@@ -1,0 +1,16 @@
+
+@mixin prefix($directive, $parameters) {
+  -webkit-#{$directive}: #{$parameters};
+     -moz-#{$directive}: #{$parameters};
+      -ms-#{$directive}: #{$parameters};
+       -o-#{$directive}: #{$parameters};
+          #{$directive}: #{$parameters};
+}
+
+@mixin opacity($opacity) {
+    -moz-opacity: $opacity;
+    -khtml-opacity: $opacity;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=#{$opacity*100});
+    filter:alpha(opacity=($opacity*100));
+    opacity: $opacity;
+}

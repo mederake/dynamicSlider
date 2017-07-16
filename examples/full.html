@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Dynamic Slider</title>
+
+        <link rel="stylesheet" href="../css/style.css"/>
+        <link rel="stylesheet" href="../css/dynSlider.css"/>
+    </head>
+    <body>
+        <div id="pageContainer">
+            <h1>full features</h1>
+            <div id="sliderWrapper">
+                <div id="sliderContainer">
+                    <img src="img/1.jpg" alt="" class="active" />
+                    <img src="img/2.jpg" alt="" />
+                    <img src="img/3.jpg" alt="" />
+                    <div id="sliderButtons"> 
+                        <div id="sliderButtonPrev"> <span>&lt;</span> </div> 
+                        <div id="sliderButtonNext"> <span>&gt;</span> </div> 
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p>
+                   The plugin simply handles the changing of images and the progressbar.<br />
+                   For everything else there is the following custom JavaScript that handles:
+                </p>
+                <ul>
+                    <li>next/previous buttons</li>
+                    <li>swiping on mobile devices</li>
+                    <li>checking a server script to look up if there are any new images to show</li>
+                </ul>
+                <p>
+                    With the help of the server side script the slider images automatically adjust to show the images from the "img"-folder, even if new ones are added or some are removed. So if you set up your server properly you can move images between the "img"-folder and the "img_additional"-folder and the slider will adjust accordingly.
+                </p>
+                <pre id="presentScript">
+                    
+                </pre>
+
+            </div>
+        </div>
+
+        <script src="../js/jquery-3.2.1.min.js"></script>
+        <script src="../js/dynSlider.js"></script>
+
+        <script type="text/javascript" id="customScript">
+
+            // set up slider with a progress bar to change every 6 seconds
+            $('#sliderContainer').dynamicSlider({duration: 6000, progressBar: true});
+
+            // add events for the buttons to change the image
+            $('#sliderButtonPrev').on('click', function () {
+                $('#sliderContainer').dynamicSlider('previous');
+
+            });
+            $('#sliderButtonNext').on('click', function () {
+                $('#sliderContainer').dynamicSlider('next');
+            });
+
+            // set up touch events to allow image change with a finger slide on mobile devices
+            var touchstart = null;
+            var touchmove = null;
+
+            $('#sliderWrapper').on('touchstart', function (e) {
+                touchstart = e.originalEvent.touches[0].clientX;
+            });
+            $('#sliderWrapper').on('touchmove', function (e) {
+                touchmove = e.originalEvent.touches[0].clientX;
+            });
+            $('#sliderWrapper').on('touchend', function () {
+
+                if (!touchstart || !touchmove) {
+                    touchstart = null;
+                    touchmove = null;
+                    return;
+                }
+
+                if (touchstart - touchmove < -30) {
+                    $('#sliderContainer').dynamicSlider('next');
+                } else if (touchstart - touchmove > 30) {
+                    $('#sliderContainer').dynamicSlider('previous');
+                }
+
+                touchstart = null;
+                touchmove = null;
+            });
+
+
+            // save the list of current images in the slider in order to be able to handle dynamic changes of images
+
+            var imgList = [];
+
+            $('#sliderContainer .dynsliderItems img').each(function () {
+                imgList.push($(this).attr('src'));
+            });
+
+
+            // check for new images every 3 seconds
+            window.setInterval(function () {
+                $.ajax({
+                    url: 'php/images.php', // call remote service (a simple php script this time)
+                    dataType: 'json',
+
+                    success: function (data) {
+
+                        var imagesToRemove = imgList.slice(0);
+                        var newImages = [];
+
+                        // run through the delivered data
+                        for (var i in data) {
+
+                            var isNewImage = true;
+
+                            // compare the delivered data to the existing entries
+                            for (var j in imgList) {
+                                if (data[i] === imgList[j]) {
+                                    // found: remove from to-remove-list
+                                    var index = imagesToRemove.indexOf(imgList[j]);
+                                    if (index >= 0) {
+                                        imagesToRemove.splice(index, 1);
+                                    }
+                                    isNewImage = false;
+                                    break;
+                                }
+                            }
+
+                            if (isNewImage) {
+                                // new image: append
+                                newImages.push(data[i]);
+                                $('#sliderContainer').dynamicSlider('add', data[i]);
+                            }
+                        }
+
+                        // remove all images that were not delivered
+                        for (var i in imagesToRemove) {
+                            $('#sliderContainer').dynamicSlider('remove', imagesToRemove[i]);
+                            var index = imgList.indexOf(imagesToRemove[i]);
+                            if (index >= 0) {
+                                imgList.splice(index, 1);
+                            }
+                        }
+
+                        imgList = imgList.concat(newImages);
+                    }
+                });
+            }, 3000);
+            
+        </script>
+        
+        <script>
+            var customScript = $('#customScript').text();
+            $('#presentScript').text(customScript);
+        </script>
+    </body>
+</html>

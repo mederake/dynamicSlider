@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Dynamic Slider</title>
+
+        <link rel="stylesheet" href="../css/style.css"/>
+        <link rel="stylesheet" href="../css/dynSlider.css"/>
+    </head>
+    <body>
+        <div id="pageContainer">
+            <h1>finger swipe</h1>
+            <div id="sliderWrapper">
+                <div id="sliderContainer">
+                    <img src="img/1.jpg" alt="" class="active" />
+                    <img src="img/2.jpg" alt="" />
+                    <img src="img/3.jpg" alt="" />
+                </div>
+            </div>
+
+            <div>
+                <p>
+                   The plugin does not provide any means to detect or handle finger swipes. But JQuery mobile does. So you can use that or set up your own implementation like in the script below.
+                </p>
+                <pre id="presentScript">
+                    
+                </pre>
+
+            </div>
+        </div>
+
+        <script src="../js/jquery-3.2.1.min.js"></script>
+        <script src="../js/dynSlider.js"></script>
+
+        <script type="text/javascript" id="customScript">
+
+            // set up slider with a progress bar to change every 6 seconds
+            $('#sliderContainer').dynamicSlider({duration: 6000, progressBar: true});
+
+            // set up touch events to allow image change with a finger slide on mobile devices
+            var touchstart = null;
+            var touchmove = null;
+
+            $('#sliderWrapper').on('touchstart', function (e) {
+                touchstart = e.originalEvent.touches[0].clientX;
+            });
+            $('#sliderWrapper').on('touchmove', function (e) {
+                touchmove = e.originalEvent.touches[0].clientX;
+            });
+            $('#sliderWrapper').on('touchend', function () {
+
+                if (!touchstart || !touchmove) {
+                    touchstart = null;
+                    touchmove = null;
+                    return;
+                }
+
+                if (touchstart - touchmove < -30) {
+                    $('#sliderContainer').dynamicSlider('next');
+                } else if (touchstart - touchmove > 30) {
+                    $('#sliderContainer').dynamicSlider('previous');
+                }
+
+                touchstart = null;
+                touchmove = null;
+            });
+
+        </script>
+        
+        <script>
+            var customScript = $('#customScript').text();
+            $('#presentScript').text(customScript);
+        </script>
+    </body>
+</html>

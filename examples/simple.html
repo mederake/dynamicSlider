@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Dynamic Slider</title>
+
+        <link rel="stylesheet" href="../css/style.css"/>
+        <link rel="stylesheet" href="../css/dynSlider.css"/>
+    </head>
+    <body>
+        <div id="pageContainer">
+            <h1>simple</h1>
+            <div id="sliderWrapper">
+                <div id="sliderContainer">
+                    <img src="img/1.jpg" alt="" class="active" />
+                    <img src="img/2.jpg" alt="" />
+                    <img src="img/3.jpg" alt="" />
+                </div>
+            </div>
+
+            <div>
+                <p>
+                    Simple example with changing images.
+                </p>
+
+                <pre id="presentScript">
+                    
+                </pre>
+            </div>
+        </div>
+
+        <script src="../js/jquery-3.2.1.min.js"></script>
+        <script src="../js/dynSlider.js"></script>
+
+        <script type="text/javascript">
+
+            // set up slider without a progress bar to change every 5 seconds
+            $('#sliderContainer').dynamicSlider({duration: 5000, progressBar: false});
+
+        </script>
+        
+        <script>
+            var customScript = $('#customScript').text();
+            $('#presentScript').text(customScript);
+        </script>
+    </body>
+</html>

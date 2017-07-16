@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Dynamic Slider</title>
+
+        <link rel="stylesheet" href="../css/style.css"/>
+        <link rel="stylesheet" href="../css/dynSlider.css"/>
+    </head>
+    <body>
+        <div id="pageContainer">
+            <h1>prev/next button</h1>
+            <div id="sliderWrapper">
+                <div id="sliderContainer">
+                    <img src="img/1.jpg" alt="" class="active" />
+                    <img src="img/2.jpg" alt="" />
+                    <img src="img/3.jpg" alt="" />
+                    <div id="sliderButtons"> 
+                        <div id="sliderButtonPrev"> <span>&lt;</span> </div> 
+                        <div id="sliderButtonNext"> <span>&gt;</span> </div> 
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p>
+                   You have to provide the buttons yourself to switch to the next/previous image. That means that you can set them up any way you like.
+                   The plugin provides "next"- and "previous"-methods that perform the change.
+                </p>
+                <pre id="presentScript">
+                    
+                </pre>
+
+            </div>
+        </div>
+
+        <script src="../js/jquery-3.2.1.min.js"></script>
+        <script src="../js/dynSlider.js"></script>
+
+        <script type="text/javascript" id="customScript">
+
+            // set up slider with a progress bar to change every 6 seconds
+            $('#sliderContainer').dynamicSlider({duration: 6000, progressBar: true});
+
+            // add events for the buttons to change the image
+            $('#sliderButtonPrev').on('click', function () {
+                $('#sliderContainer').dynamicSlider('previous');
+
+            });
+            $('#sliderButtonNext').on('click', function () {
+                $('#sliderContainer').dynamicSlider('next');
+            });
+
+            
+        </script>
+        
+        <script>
+            var customScript = $('#customScript').text();
+            $('#presentScript').text(customScript);
+        </script>
+    </body>
+</html>

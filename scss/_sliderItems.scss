@@ -1,0 +1,24 @@
+.dynsliderItems {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    
+    img {
+        max-width: 100%;
+
+        display: block;
+        position: absolute;
+        
+        @include opacity(0);
+        
+        @include prefix(  transition-property, opacity );
+        @include prefix(  transition-duration, 750ms );
+        @include prefix(  transition-timing-function, ease-out );
+        
+        
+        &.active {
+            @include opacity(1);
+        }
+
+    }
+}

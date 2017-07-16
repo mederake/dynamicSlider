@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Dynamic Slider</title>
+
+        <link rel="stylesheet" href="../css/style.css"/>
+        <link rel="stylesheet" href="../css/dynSlider.css"/>
+    </head>
+    <body>
+        <div id="pageContainer">
+            <h1>change images</h1>
+            <div id="sliderWrapper">
+                <div id="sliderContainer">
+                    <img src="img/1.jpg" alt="" class="active" />
+                    <img src="img/2.jpg" alt="" />
+                    <img src="img/3.jpg" alt="" />
+                </div>
+            </div>
+
+            <div>
+                <p>
+                   Removes an image from the slider and adds one randomly (which may cause the same image to appear multiple times, but who cares...).
+                </p>
+                
+                <pre id="presentScript">
+                    
+                </pre>
+
+            </div>
+        </div>
+
+        <script src="../js/jquery-3.2.1.min.js"></script>
+        <script src="../js/dynSlider.js"></script>
+
+        <script type="text/javascript" id="customScript">
+
+            // set up slider with a progress bar to change every 3 seconds
+            $('#sliderContainer').dynamicSlider({duration: 3000, progressBar: true});
+
+            var imgList = ['img/1.jpg', 'img/2.jpg', 'img/3.jpg', 'img_additional/4.jpg', 'img_additional/5.jpg'];
+
+            // change images every 10 seconds
+            window.setInterval(function () {
+                
+                var randomIndex = Math.floor((Math.random()*imgList.length));
+                var randomPath = imgList[randomIndex];
+                
+                $('#sliderContainer').dynamicSlider('add', randomPath);
+                
+                var removeImage = $('#sliderContainer img').first();
+                $('#sliderContainer').dynamicSlider('remove', removeImage);
+                
+            }, 10000);
+            
+        </script>
+        
+        <script>
+            var customScript = $('#customScript').text();
+            $('#presentScript').text(customScript);
+        </script>
+    </body>
+</html>
