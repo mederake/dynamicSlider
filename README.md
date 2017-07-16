@@ -10,7 +10,9 @@ The main benefit of this plugin is the ability to dynamically add or remove imag
 
 Usage
 -----
-This is a jQuery-plugin. So you have to include [jQUery](http://jquery.com/) on your site first and add the dynamic slider script.
+This is a jQuery-plugin. So you have to include [jQUery](http://jquery.com/) on your site first and add the dynamic slider script. 
+Included in the package is a small style-sheet which also has to be included in the page for the slider to work properly.
+
 Basically then you only need a container with images on your site and let go the plugin on it.
 
 ```html
